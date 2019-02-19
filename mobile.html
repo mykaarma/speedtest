@@ -157,6 +157,7 @@ function startStop(){
 		I("startStopBtn").className="";
 		initUI();
 	}else{
+	    initUI();
 		//test is not running, begin
 		w=new Worker('speedtest_worker.min.js');
 		w.postMessage('start'); //Add optional parameters as a JSON object to this command
@@ -192,6 +193,7 @@ function initUI(){
 	I("pingText").textContent="";
 	I("jitText").textContent="";
 	I("ip").textContent="";
+	I("testResultText").innerHTML="";
 	I("closeIcon").src = 'images/baseline-close-24px_grey.svg';
     I("doneIcon").src = 'images/baseline-done-24px_grey.svg';
     if(networkType=='WiFi') {
