@@ -249,8 +249,19 @@ function displaySpeedTestResults(data,status) {
         					    speedTestStatus: "failure"
       						  };
 	}
-    logSpeedTestDetails(speedTestDetails);
-    window.webkit.messageHandlers.logSpeedTestDetails.postMessage(speedTestDetails);
+	try {
+        logSpeedTestDetails(speedTestDetails);
+    } catch(err) {
+      console.log(err.message);
+    }
+    try {
+        window.webkit.messageHandlers.logSpeedTestDetails.postMessage(speedTestDetails);
+    } catch(err) {
+      console.log(err.message);
+    }
+}
+function logSpeedTestDetails(speedTestDetails) {
+   console.log(speedTestDetails);
 }
 </script>
 </head>
