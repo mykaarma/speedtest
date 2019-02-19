@@ -216,8 +216,8 @@ function displaySpeedTestResults(data,status) {
          I("networkTypeIcon").src = 'images/baseline-signal_cellular_alt-24px_green.svg';  
        }
        speedTestDetails = {
-                                speed: uploadSpeed,
-        					    speedTestStatus: "success"
+                                "speed": uploadSpeed,
+        					    "speedTestStatus": "success"
       						  };
        
     } else if (uploadSpeed<passThreshold && uploadSpeed>=warnThreshold) {
@@ -230,8 +230,8 @@ function displaySpeedTestResults(data,status) {
          I("networkTypeIcon").src = 'images/baseline-signal_cellular_alt-24px_yellow.svg';  
        }
        speedTestDetails = {
-                                speed: uploadSpeed,
-        					    speedTestStatus: "warning"
+                                "speed": uploadSpeed,
+        					    "speedTestStatus": "warning"
       						  };
       
     } else {
@@ -245,8 +245,8 @@ function displaySpeedTestResults(data,status) {
          I("networkTypeIcon").src = 'images/baseline-signal_cellular_alt-24px_red.svg';  
        }
        speedTestDetails = {
-                                speed: uploadSpeed,
-        					    speedTestStatus: "failure"
+                                "speed": uploadSpeed,
+        					    "speedTestStatus": "failure"
       						  };
 	}
 	try {
