@@ -250,7 +250,7 @@ function displaySpeedTestResults(data,status) {
       						  };
 	}
     logSpeedTestDetails(speedTestDetails);
-    window.webkit.messageHandlers["logSpeedTestDetails"].postMessage(speedTestDetails);
+    window.webkit.messageHandlers.logSpeedTestDetails.postMessage(speedTestDetails);
 }
 </script>
 </head>
