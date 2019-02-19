@@ -56,13 +56,6 @@
 		position:relative;
 		box-sizing:border-box;
 	}
-	div.doneCrossArea{
-		display:inline-block;
-		width:14em;
-		height:9em;
-		position:relative;
-		box-sizing:border-box;
-	}
 	div.testName{
 		position:absolute;
 		top:0.1em; left:0;
@@ -77,12 +70,6 @@
 		font-size:2.5em;
 		z-index:9;
 	}
-	div.crossDone{
-		position:absolute;
-		top:0.1em; left:0;
-		width:100%;
-		z-index:9;
-	}
 	#dlText{
 		color:#6060AA;
 	}
@@ -91,10 +78,6 @@
 	}
 	#pingText,#jitText{
 		color:#AA6060;
-	}
-	#testResultText {
-	    font-size:2em;
-	    color: rgb(85,85,85);
 	}
 	div.meterText:empty:before{
 		color:#505050 !important;
@@ -123,33 +106,9 @@
 			margin: 0 auto;
 		}
 	}
-
 </style>
 <script type="text/javascript">
-var QueryString = function () {
-  // This function is anonymous, is executed immediately and
-  // the return value is assigned to QueryString!
-  var query_string = {};
-  var query = window.location.search.substring(1);
-  var vars = query.split("&");
-  for (var i=0;i<vars.length;i++) {
-    var pair = vars[i].split("=");
-        // If first entry with this name
-    if (typeof query_string[pair[0]] === "undefined") {
-      query_string[pair[0]] = decodeURIComponent(pair[1]);
-        // If second entry with this name
-    } else if (typeof query_string[pair[0]] === "string") {
-      var arr = [ query_string[pair[0]],decodeURIComponent(pair[1]) ];
-      query_string[pair[0]] = arr;
-        // If third or later entry with this name
-    } else {
-      query_string[pair[0]].push(decodeURIComponent(pair[1]));
-    }
-  }
-  return query_string;
-}();
 function I(id){return document.getElementById(id);}
-
 var w=null; //speedtest worker
 function startStop(){
 	if(w!=null){
@@ -170,7 +129,6 @@ function startStop(){
 				//test completed
 				I("startStopBtn").className="";
 				w=null;
-				displaySpeedTestResults(data,status);
 			}
 			I("ip").textContent=data.clientIp;
 			I("dlText").textContent=(status==1&&data.dlStatus==0)?"...":data.dlStatus;
@@ -184,10 +142,6 @@ function startStop(){
 setInterval(function(){
 	if(w) w.postMessage('status');
 },200);
-
-var passThreshold = QueryString.pass_threshold==undefined?30:QueryString.pass_threshold; // in Mbps
-var warnThreshold = QueryString.warn_threshold==undefined?15:QueryString.warn_threshold; // in Mbps
-var networkType = QueryString.network_type==undefined?'WiFi':QueryString.network_type;
 //function to (re)initialize UI
 function initUI(){
 	I("dlText").textContent="";
@@ -195,69 +149,11 @@ function initUI(){
 	I("pingText").textContent="";
 	I("jitText").textContent="";
 	I("ip").textContent="";
-	I("closeIcon").src = 'images/baseline-close-24px_grey.svg';
-    I("doneIcon").src = 'images/baseline-done-24px_grey.svg';
-    if(networkType=='WiFi') {
-         I("networkTypeIcon").src = 'images/baseline-wifi-24px_grey.svg';
-    } else {
-         I("networkTypeIcon").src = 'images/baseline-signal_cellular_alt-24px_grey.svg';  
-    }
-}
-
-var successTestResult = 'Awesome, you passed with flying colors. <div style=\'color:rgb(129,209,53)\'>UPLOAD_SPEED Mbps</div>';
-var warningTestResult = 'You are just below our threshold at <div style=\'color:rgb(232,214,48)\'>UPLOAD_SPEED Mbps.</div> Ideally you should show above <div style=\'color:rgb(129,209,53)\'>'+passThreshold+' Mbps</div>';
-var failureTestResult = 'Your upload speed is <div style=\'color:rgb(249,97,116)\'>UPLOAD_SPEED Mbps</div> which did not pass test. Upload speed should be atleast <div style=\'color:rgb(232,214,48)\'>'+warnThreshold+' Mbps</div>';
-
-function displaySpeedTestResults(data,status) {
-    if(data.ulStatus>=passThreshold) {
-       I("testResultText").innerHTML = successTestResult.replace('UPLOAD_SPEED',data.ulStatus);
-       I("closeIcon").src = 'images/baseline-close-24px_grey.svg';
-       I("doneIcon").src = 'images/baseline-done-24px_green.svg';
-       if(networkType=='WiFi') {
-         I("networkTypeIcon").src = 'images/baseline-wifi-24px_green.svg';
-       } else {
-         I("networkTypeIcon").src = 'images/baseline-signal_cellular_alt-24px_green.svg';  
-       }
-       var speedTestDetails = {
-                                speed: data.ulStatus,
-        					    speedTestStatus: "success"
-      						  };
-       
-    } else if (data.ulStatus<passThreshold && data.ulStatus>=warnThreshold) {
-       I("testResultText").innerHTML = warningTestResult.replace('UPLOAD_SPEED',data.ulStatus);
-       I("closeIcon").src = 'images/baseline-close-24px_grey.svg';
-       I("doneIcon").src = 'images/baseline-done-24px_yellow.svg';
-       if(networkType=='WiFi') {
-         I("networkTypeIcon").src = 'images/baseline-wifi-24px_yellow.svg';
-       } else {
-         I("networkTypeIcon").src = 'images/baseline-signal_cellular_alt-24px_yellow.svg';  
-       }
-       var speedTestDetails = {
-                                speed: data.ulStatus,
-        					    speedTestStatus: "warning"
-      						  };
-      
-    } else {
-       I("testResultText").innerHTML = failureTestResult.replace('UPLOAD_SPEED',data.ulStatus);
-       I("closeIcon").src = 'images/baseline-close-24px_red.svg';
-       I("doneIcon").src = 'images/baseline-done-24px_grey.svg';
-       
-       if(networkType=='WiFi') {
-         I("networkTypeIcon").src = 'images/baseline-wifi-24px_red.svg';
-       } else {
-         I("networkTypeIcon").src = 'images/baseline-signal_cellular_alt-24px_red.svg';  
-       }
-       var speedTestDetails = {
-                                speed: data.ulStatus,
-        					    speedTestStatus: "failure"
-      						  };
-	}
-    logSpeedTestDetails(speedTestDetails);
 }
 </script>
 </head>
 <body>
-<h1>Speedtest</h1>
+<h1>HTML5 Speedtest</h1>
 <div id="startStopBtn" onclick="startStop()"></div>
 <div id="test">
 	<div class="testGroup">
@@ -286,22 +182,6 @@ function displaySpeedTestResults(data,status) {
 	</div>
 	<div id="ipArea">
 		IP Address: <span id="ip"></span>
-	</div>
-	<div id="speedTestResult">
-	  <div id="networkType">
-		  <img id="networkTypeIcon" src="images/baseline-wifi-24px_green.svg" style="width:80px">
-	  </div>
-	  <div class="testGroup">
-		  <div class="doneCrossArea">
-			  <div class="crossDone"><img id="closeIcon" src="images/baseline-close-24px_grey.svg" style="width:80px"></div>
-		  </div>
-		  <div class="doneCrossArea">
-			  <div class="crossDone"><img id="doneIcon" src="images/baseline-done-24px_green.svg" style="width:80px"></div>
-		  </div>
-	  </div>
-	  <div id="testResult">
-		     <div id="testResultText"></div>
-	  </div>
 	</div>
 </div>
 <a href="https://github.com/adolfintel/speedtest">Source code</a>
