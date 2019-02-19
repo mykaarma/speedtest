@@ -251,6 +251,7 @@ function displaySpeedTestResults(data,status) {
         					    "speedTestStatus": "failure"
       						  };
 	}
+	console.log(speedTestDetails);
 	try {
         Android.logSpeedTestDetails(speedTestDetails);
     } catch(err) {
