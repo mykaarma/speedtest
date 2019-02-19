@@ -182,8 +182,8 @@ function startStop(){
 setInterval(function(){
 	if(w) w.postMessage('status');
 },200);
-var passThreshold = QueryString.pass_threshold==undefined?30:QueryString.pass_threshold; // in Mbps
-var warnThreshold = QueryString.warn_threshold==undefined?15:QueryString.warn_threshold; // in Mbps
+var passThreshold = parseFloat(QueryString.pass_threshold==undefined?"30":QueryString.pass_threshold); // in Mbps
+var warnThreshold = parseFloat(QueryString.warn_threshold==undefined?"15":QueryString.warn_threshold); // in Mbps
 var networkType = QueryString.network_type==undefined?'WiFi':QueryString.network_type;
 //function to (re)initialize UI
 function initUI(){
@@ -204,6 +204,7 @@ var successTestResult = 'Awesome, you passed with flying colors. <div style=\'co
 var warningTestResult = 'You are just below our threshold at <div style=\'color:rgb(232,214,48)\'>UPLOAD_SPEED Mbps.</div> Ideally you should show above <div style=\'color:rgb(129,209,53)\'>'+passThreshold+' Mbps</div>';
 var failureTestResult = 'Your upload speed is <div style=\'color:rgb(249,97,116)\'>UPLOAD_SPEED Mbps</div> which did not pass test. Upload speed should be atleast <div style=\'color:rgb(232,214,48)\'>'+warnThreshold+' Mbps</div>';
 function displaySpeedTestResults(data,status) {
+    var speedTestDetails;
     if(data.ulStatus>=passThreshold) {
        I("testResultText").innerHTML = successTestResult.replace('UPLOAD_SPEED',data.ulStatus);
        I("closeIcon").src = 'images/baseline-close-24px_grey.svg';
@@ -213,7 +214,7 @@ function displaySpeedTestResults(data,status) {
        } else {
          I("networkTypeIcon").src = 'images/baseline-signal_cellular_alt-24px_green.svg';  
        }
-       var speedTestDetails = {
+       speedTestDetails = {
                                 speed: data.ulStatus,
         					    speedTestStatus: "success"
       						  };
@@ -227,7 +228,7 @@ function displaySpeedTestResults(data,status) {
        } else {
          I("networkTypeIcon").src = 'images/baseline-signal_cellular_alt-24px_yellow.svg';  
        }
-       var speedTestDetails = {
+       speedTestDetails = {
                                 speed: data.ulStatus,
         					    speedTestStatus: "warning"
       						  };
@@ -242,7 +243,7 @@ function displaySpeedTestResults(data,status) {
        } else {
          I("networkTypeIcon").src = 'images/baseline-signal_cellular_alt-24px_red.svg';  
        }
-       var speedTestDetails = {
+       speedTestDetails = {
                                 speed: data.ulStatus,
         					    speedTestStatus: "failure"
       						  };
