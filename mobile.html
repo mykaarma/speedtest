@@ -251,14 +251,10 @@ function displaySpeedTestResults(data,status) {
         					    "speedTestStatus": "failure"
       						  };
 	}
+	console.log(speedTestDetails.speed+' '+speedTestDetails.speedTestStatus);
 	console.log(speedTestDetails);
-	try {
-        Android.logSpeedTestDetails(speedTestDetails);
-    } catch(err) {
-      console.log(err.message);
-    }
     try {
-        Android.logSpeedTestDetails(uploadSpeed);
+        Android.logSpeedTestDetails(speedTestDetails.speed,speedTestDetails.speedTestStatus);
     } catch(err) {
       console.log(err.message);
     }
