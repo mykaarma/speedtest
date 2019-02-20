@@ -264,6 +264,13 @@ function displaySpeedTestResults(data,status) {
       console.log(err.message);
     }
 }
+// function to handle ios webview
+function setInitialScale(initialScale) {
+   var contentValue = "width=device-width, initial-scale="+initialScale+", shrink-to-fit=no, user-scalable=no";
+   console.log(contentValue);
+   viewport = document.querySelector("meta[name=viewport]");
+   viewport.setAttribute("content", contentValue);
+}
 </script>
 </head>
 <body>
